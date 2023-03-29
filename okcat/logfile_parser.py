@@ -39,12 +39,15 @@ class LogFileParser:
         self.filePaths = file_paths
         self.hideSameTags = hide_same_tags
 
-    def setup(self, yml_file_name):
+    def setup(self, args):
+        yml_file_name = args.yml
+        self.args = args
         for path in self.filePaths:
             if not exists(path):
                 exit("log path: %s is not exist!" % path)
         self.processor = LogProcessor(self.hideSameTags)
 
+        self.processor.setup_min_level(args.min_level)
         loader = ConfLoader()
         loader.load(get_conf_path(yml_file_name))
 

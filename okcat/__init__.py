@@ -93,7 +93,7 @@ def main():
             exit()
 
         parser = LogFileParser(file_paths, args.hide_same_tags)
-        parser.setup(args.yml)
+        parser.setup(args)
         parser.process()
     else:
         is_interrupt_by_user = False

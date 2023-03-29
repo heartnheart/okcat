@@ -23,6 +23,8 @@ from okcat.logseparator import LogSeparator
 from okcat.terminalcolor import allocate_color, colorize, TAGTYPES, termcolor, BLACK, RESET
 from okcat.trans import Trans
 
+LOG_LEVELS = 'VDIWEF'
+LOG_LEVELS_MAP = dict([(LOG_LEVELS[i], i) for i in range(len(LOG_LEVELS))])
 __author__ = 'JacksGong'
 
 TIME_WIDTH = 12
@@ -59,11 +61,14 @@ class LogProcessor:
     regex_parser = None
     highlight_list = None
     # target_time = None
+    min_level = None
 
     # tmp
     last_msg_key = None
     last_tag = None
     pre_line_match = True
+
+
 
     def __init__(self, hide_same_tags):
         self.hide_same_tags = hide_same_tags
@@ -82,6 +87,9 @@ class LogProcessor:
         self.tag_keywords = tag_keywords
         self.line_keywords = line_keywords
 
+    def setup_min_level(self, level):
+        self.min_level = LOG_LEVELS_MAP[level.upper()]
+
     def setup_regex_parser(self, regex_exp):
         self.regex_parser = LogRegex(regex_exp)
 
@@ -95,6 +103,9 @@ class LogProcessor:
             return None, None, False
 
         date, time, level, tag, process, thread, message = self.regex_parser.parse(origin_line)
+        if self.min_level and level in LOG_LEVELS_MAP and LOG_LEVELS_MAP[level] < self.min_level:
+            return None, None, False
+
         if message is None:
             message = origin_line
 
