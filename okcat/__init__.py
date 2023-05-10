@@ -42,7 +42,7 @@ def main():
     parser.add_argument('package_or_path', nargs='*',
                         help='This can be Application package name(s) or log file path(if the file from path is exist)')
     parser.add_argument('-y', '--yml_file_name', dest='yml', help='Using yml file you config on ~/.okcat folder')
-    parser.add_argument('--hide-same-tags', dest='hide_same_tags', action='store_true',
+    parser.add_argument('--hide-same-tags', dest='hide_same_tags', action='store_true', default=True,
                         help='Do not display the same tag name')
 
     # following args are just for parser
