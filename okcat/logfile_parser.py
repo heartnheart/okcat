@@ -94,7 +94,7 @@ class LogFileParser:
     def process(self):
         origin_index = 0
         for path in self.filePaths:
-            stream = open(path, "r")
+            stream = open(path, "r", encoding='utf-8', errors='ignore')
             self.logStreams.append(stream)
             self.popup_cache_line(origin_index)
             origin_index += 1
