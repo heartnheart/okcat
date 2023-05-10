@@ -56,7 +56,8 @@ class LogFileParser:
                                    hide_msg_list=loader.get_hide_msg_list())
         self.processor.setup_separator(separator_rex_list=loader.get_separator_regex_list())
         self.processor.setup_highlight(highlight_list=loader.get_highlight_list())
-        self.processor.setup_condition(tag_keywords=loader.get_tag_keyword_list())
+        self.processor.setup_condition(tag_keywords=loader.get_tag_keyword_list(),
+                                       exclude_tag_keywords=loader.get_exclude_tag_keyword_list())
         log_line_regex = loader.get_log_line_regex()
         if log_line_regex is None:
             log_line_regex = 'date,time,process,thread,level,tag,message = "(.\S*) *(.\S*) *(\d*) *(\d*) *([A-Z]) *([^:]*): (.*?)$"'

@@ -29,7 +29,7 @@ __author__ = 'JacksGong'
 
 TIME_WIDTH = 12
 THREAD_WIDTH = 12
-TAG_WIDTH = 23
+TAG_WIDTH = 33
 
 width = -1
 # noinspection PyBroadException
@@ -56,6 +56,7 @@ class LogProcessor:
     hide_same_tags = None
     trans = None
     tag_keywords = None
+    exclude_tag_keywords = None
     line_keywords = None
     separator = None
     regex_parser = None
@@ -83,9 +84,11 @@ class LogProcessor:
     def setup_highlight(self, highlight_list):
         self.highlight_list = highlight_list
 
-    def setup_condition(self, tag_keywords, line_keywords=None):
+    def setup_condition(self, tag_keywords, line_keywords=None, exclude_tag_keywords=None):
         self.tag_keywords = tag_keywords
         self.line_keywords = line_keywords
+        self.exclude_tag_keywords = exclude_tag_keywords
+
 
     def setup_min_level(self, level):
         self.min_level = LOG_LEVELS_MAP[level.upper()]
@@ -115,6 +118,11 @@ class LogProcessor:
     def process_decode_content(self, line, time, level, tag, process, thread, message):
 
         match_condition = True
+
+        if self.exclude_tag_keywords is not None and tag is not None:
+            if keywords_regex(tag, self.exclude_tag_keywords):
+                match_condition = False
+                self.pre_line_match = False
 
         # filter
         if self.tag_keywords is not None and tag is not None:

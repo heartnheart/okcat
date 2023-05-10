@@ -54,6 +54,8 @@ class ConfLoader:
 
     def get_tag_keyword_list(self):
         return self.get_value('tag-keyword-list')
+    def get_exclude_tag_keyword_list(self):
+        return self.get_value('exclude-tag-keyword-list')
 
     def get_trans_msg_map(self):
         return self.get_value('trans-msg-map')
